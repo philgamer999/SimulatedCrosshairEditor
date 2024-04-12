@@ -1,7 +1,7 @@
 ﻿
 namespace Simulated_Crosshair_Editor
 {
-    partial class Form2
+    partial class CrosshairWindow
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@ namespace Simulated_Crosshair_Editor
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form2));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CrosshairWindow));
             this.CrosshairPicture = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.CrosshairPicture)).BeginInit();
             this.SuspendLayout();
@@ -38,27 +38,25 @@ namespace Simulated_Crosshair_Editor
             // 
             this.CrosshairPicture.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.CrosshairPicture.Enabled = false;
-            this.CrosshairPicture.Location = new System.Drawing.Point(0, 15);
+            this.CrosshairPicture.Location = new System.Drawing.Point(15, 30);
             this.CrosshairPicture.Name = "CrosshairPicture";
-            this.CrosshairPicture.Size = new System.Drawing.Size(233, 233);
+            this.CrosshairPicture.Size = new System.Drawing.Size(63, 63);
             this.CrosshairPicture.TabIndex = 0;
             this.CrosshairPicture.TabStop = false;
             // 
-            // Form2
+            // CrosshairWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(233, 233);
+            this.ClientSize = new System.Drawing.Size(93, 93);
             this.Controls.Add(this.CrosshairPicture);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MaximumSize = new System.Drawing.Size(233, 233);
-            this.MinimumSize = new System.Drawing.Size(233, 233);
-            this.Name = "Form2";
+            this.Name = "CrosshairWindow";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Form2";
+            this.Text = "CrosshairWindow";
             this.TopMost = true;
-            this.Load += new System.EventHandler(this.Form2_Load);
+            this.Load += new System.EventHandler(this.CrosshairWindow_Load);
             ((System.ComponentModel.ISupportInitialize)(this.CrosshairPicture)).EndInit();
             this.ResumeLayout(false);
 

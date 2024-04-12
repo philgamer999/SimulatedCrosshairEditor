@@ -21,14 +21,14 @@ namespace Simulated_Crosshair_Editor
     {
         string appPath = "";
         string dataPath = "";
-        string libraryPath = "";
+        public string libraryPath = "";
         string libraryGenPath = "";
         string libraryImgPath = "";
-        string crosshairWindowPath = "";
+        public string crosshairWindowPath = "";
 
         bool form2open;
-        Process processCrosshairWindow;
 
+        CrosshairWindow crosshairWindow;
         Bitmap bmEdit;
         Graphics graphicsBMEdit;
         bool editingCrosshair = false;
@@ -45,8 +45,6 @@ namespace Simulated_Crosshair_Editor
         List<char> rgbValues = new List<char>();
         bool hexChanging;
 
-        private IInputSimulator inputSimulator = new InputSimulator();
-
         public MainWindow()
         {
             InitializeComponent();
@@ -56,33 +54,11 @@ namespace Simulated_Crosshair_Editor
             LibraryPanel.Visible = true;
             LibraryPanel.Enabled = true;
 
-            appPath = Application.StartupPath;
-            dataPath = appPath + "/data";
-            libraryPath = dataPath + "/library";
-            libraryGenPath = libraryPath + "/gen";
-            libraryImgPath = libraryPath + "/img";
-            crosshairWindowPath = dataPath + "/crosshair_window/CrosshairWindow.exe";
-            if (!File.Exists(dataPath + "/crosshair_window/active.txt"))
-            {
-                File.Create(dataPath + "/crosshair_window/active.txt");
-                File.WriteAllText(dataPath + "/crosshair_window/active.txt", libraryImgPath + "/test_63x.png");
-                Application.Exit();
-            }
-            else if (File.ReadAllText(dataPath + "/crosshair_window/active.txt") == "")
-            {
-                File.WriteAllText(dataPath + "/crosshair_window/active.txt", libraryImgPath + "/test_63x.png");
-                Application.Exit();
-            }
-
-            if (!File.Exists(File.ReadAllText(dataPath + "/crosshair_window/active.txt")))
-            {
-                File.WriteAllText(dataPath + "/crosshair_window/active.txt", "");
-                Application.Exit();
-            }
+            Paths();
 
             GetLibraryItems();
 
-            Bitmap tempCrosshair = (Bitmap)Bitmap.FromFile(File.ReadAllText(dataPath + "/crosshair_window/active.txt"));
+            Bitmap tempCrosshair = (Bitmap)Bitmap.FromFile(File.ReadAllText(libraryPath + "/active.txt"));
             Bitmap corsshairShowcase = new Bitmap(tempCrosshair, 95, 95);
             CrosshairPicture.Image = corsshairShowcase;
 
@@ -90,6 +66,33 @@ namespace Simulated_Crosshair_Editor
             graphicsBMEdit = Graphics.FromImage(bmEdit);
             graphicsBMEdit.Clear(Color.Transparent);
             EditPanelViewCrosshairPicture.Image = bmEdit;
+        }
+
+        private void Paths()
+        {
+            appPath = Application.StartupPath;
+            dataPath = appPath + "/data";
+            libraryPath = dataPath + "/library";
+            libraryGenPath = libraryPath + "/gen";
+            libraryImgPath = libraryPath + "/img";
+            crosshairWindowPath = dataPath + "/crosshair_window/CrosshairWindow.exe";
+            if (!File.Exists(libraryPath + "/active.txt"))
+            {
+                File.Create(libraryPath + "/active.txt");
+                File.WriteAllText(libraryPath + "/active.txt", libraryImgPath + "/test_63x.png");
+                Application.Exit();
+            }
+            else if (File.ReadAllText(libraryPath + "/active.txt") == "")
+            {
+                File.WriteAllText(libraryPath + "/active.txt", libraryImgPath + "/test_63x.png");
+                Application.Exit();
+            }
+
+            if (!File.Exists(File.ReadAllText(libraryPath + "/active.txt")))
+            {
+                File.WriteAllText(libraryPath + "/active.txt", "");
+                Application.Exit();
+            }
         }
 
         private void GetLibraryItems()
@@ -119,7 +122,7 @@ namespace Simulated_Crosshair_Editor
         private void LibraryButton_Click(object sender, EventArgs e)
         {
             Button clickedButton = (Button)sender;
-            File.WriteAllText(dataPath + "/crosshair_window/active.txt", libraryImgPath + "/" + clickedButton.Text + ".png");
+            File.WriteAllText(libraryPath + "/active.txt", libraryImgPath + "/" + clickedButton.Text + ".png");
             Bitmap tempCrosshair = (Bitmap)Bitmap.FromFile(libraryImgPath + "/" + clickedButton.Text + ".png");
             Bitmap corsshairShowcase = new Bitmap(tempCrosshair, 95, 95);
             CrosshairPicture.Image = corsshairShowcase;
@@ -479,9 +482,8 @@ namespace Simulated_Crosshair_Editor
             {
                 try
                 {
-                    processCrosshairWindow = new Process();
-                    processCrosshairWindow.StartInfo.FileName = crosshairWindowPath;
-                    processCrosshairWindow.Start();
+                    crosshairWindow = new CrosshairWindow();
+                    crosshairWindow.Show();
                     form2open = true;
                     ShowHideButton.Text = "Close";
                 }
@@ -494,16 +496,7 @@ namespace Simulated_Crosshair_Editor
             {
                 try
                 {
-                    if (!processCrosshairWindow.HasExited)
-                    {
-                        processCrosshairWindow.CloseMainWindow();
-                        processCrosshairWindow.WaitForExit(5000);
-                    }
-
-                    if (!processCrosshairWindow.HasExited)
-                    {
-                        processCrosshairWindow.Kill();
-                    }
+                    crosshairWindow.Exit();
                     form2open = false;
                     ShowHideButton.Text = "Show";
                 }
